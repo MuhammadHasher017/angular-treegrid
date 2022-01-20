@@ -1,0 +1,18 @@
+
+<ejs-dialog id='dialog' #ejDialog [target]='targetElement' width='363px'
+[closeOnEscape]='closeOnEscape'>
+ <ng-template #header>
+      <span>Choose a Dialog Position</span>
+  </ng-template>
+  <ng-template #content>
+ <form action="">
+  <input type="text">
+
+ </form>
+  </ng-template>
+  <ng-template #footerTemplate>
+      <span id="posvalue" style="float:left; padding-left:10px;">
+      <button>OK</button>
+      </span>
+  </ng-template>
+</ejs-dialog>

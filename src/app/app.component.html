@@ -1,58 +1,64 @@
 <div style="height: 350px">
 
-  <ejs-treegrid [dataSource]="data" #treegrid height="100%" width="100%" [treeColumnIndex]="1"
-    [sortSettings]="sortSettings" [toolbar]="toolbarOptions" [contextMenuItems]="contextMenuItems" [allowSorting]="true"
-    [allowResizing]="true" [allowPaging]="true" [pageSettings]="pageSettings"
-    [editSettings]="editSettings"
-
-    (contextMenuClick)='contextMenuClick($event)'
-   childMapping='subtasks'>
+  <ejs-treegrid [dataSource]="data" #treegrid height="200%" width="100%" [treeColumnIndex]="1"
+    [sortSettings]="sortSettings" [contextMenuItems]="contextMenuItems" [allowSorting]="true"
+    [allowResizing]="true" [allowPaging]="true" [pageSettings]="pageSettings" [editSettings]="editSettings"
+    (contextMenuClick)='contextMenuClick($event)' childMapping='subtasks'>
 
     <e-columns>
-      <e-column field="taskID" headerText="Task ID" textAlign="Right" width="90"></e-column>
-      <e-column field="taskName" headerText="Task Name" textAlign="Left" width="180"></e-column>
-      <e-column field="startDate" headerText="Start Date" textAlign="Right" format="yMd" width="90"></e-column>
-      <e-column field="duration" headerText="Duration" textAlign="Right" width="80"></e-column>
+      <e-column field="taskID" headerText="Task ID" textAlign="Right" width="20%"></e-column>
+      <e-column field="taskName" headerText="Task Name" textAlign="Left" width="30%"></e-column>
+      <e-column field="startDate" headerText="Start Date" textAlign="Right" format="yMd" width="20%"></e-column>
+      <e-column field="duration" headerText="Duration" textAlign="Right" width="30%"></e-column>
     </e-columns>
 
   </ejs-treegrid>
 </div>
 
-<button class="e-control e-btn" style="position: absolute;" id="targetButton" (click)="onOpenDialog($event)">Open Dialog</button>
 <div #container class='root-container'></div>
-  <ejs-dialog id='dialog' #ejDialog header='Dialog' content='This is a Dialog with button and primary button' [target]='targetElement' width='500px' [buttons]='buttons'>
-    <ng-template #header>
-  <span>Choose a Dialog Position</span>
+<ejs-dialog id='dialog' #ejDialog header='Dialog' content='This is a Dialog with button and primary button'
+   width='500px' [buttons]='buttons'>
+  <ng-template #header>
+    <span>Choose a Dialog Position</span>
   </ng-template>
   <ng-template #content>
     <form id="reactive" [formGroup]="form">
       <div class="form-group" style="padding-top: 11px;">
-          <div class="e-float-input">
-              <input type="text" id="name" name="name" class="required" formControlName="name">
-              <span class="e-float-line"></span>
-              <label class="e-float-text e-label-top" for="name">Name</label>
-          </div>
+        <div class="e-float-input">
+          <input type="text" id="taskId" name="taskID" class="required" formControlName="taskID">
+          <span class="e-float-line"></span>
+          <label class="e-float-text e-label-top" for="taskID">Task ID</label>
+        </div>
 
       </div>
 
       <div class="form-group" style="padding-top: 11px;">
-          <div class="e-float-input">
-              <input type="text" id="email" name="email" class="required" formControlName="email">
-              <span class="e-float-line"></span>
-              <label class="e-float-text e-label-top" for="email">Email</label>
-          </div>
+        <div class="e-float-input">
+          <input type="text" id="taskName" name="taskName" class="required" formControlName="taskName">
+          <span class="e-float-line"></span>
+          <label class="e-float-text e-label-top" for="taskName">TaskName</label>
+        </div>
 
       </div>
 
       <div class="form-group" style="padding-top: 11px;">
-          <div class="e-float-input">
-              <input type="number" id="contact" name="contact" class="required" formControlName="contact">
-              <span class="e-float-line"></span>
-              <label class="e-float-text e-label-top" for="contact">Contact No</label>
-          </div>
+        <div class="e-float-input">
+          <input type="date" id="startDate" name="startDate" class="required" formControlName="startDate">
+          <span class="e-float-line"></span>
+          <label class="e-float-text e-label-top" for="startDate">start Date</label>
+        </div>
+
+      </div>
+
+      <div class="form-group" style="padding-top: 11px;">
+        <div class="e-float-input">
+          <input type="text" id="duration" name="duration" class="required" formControlName="duration">
+          <span class="e-float-line"></span>
+          <label class="e-float-text e-label-top" for="duration">Duration</label>
+        </div>
 
       </div>
 
     </form>
   </ng-template>
-      </ejs-dialog>
+</ejs-dialog>
