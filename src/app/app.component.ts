@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef , AfterViewInit} from '@angular/core';
 import { sampleData } from './datasource';
 import {
   ColumnMenuOpenEventArgs,
@@ -10,6 +10,7 @@ import {
   EditSettingsModel,
   ToolbarItems,
   TreeGridComponent,
+  VirtualScrollService
 } from '@syncfusion/ej2-angular-treegrid';
 import {
   MenuItemModel,
@@ -32,10 +33,12 @@ import {
   selector: 'app-root',
   // templateUrl: './app.component.html',
   // template: `` ,
+  providers: [VirtualScrollService],
+
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit , AfterViewInit{
   title = 'test-task-FE';
     buttonName: any;
 
@@ -44,21 +47,35 @@ export class AppComponent implements OnInit {
   public data: Object[];
   public pageSettings: PageSettingsModel;
   public sortSettings: SortSettingsModel;
+  public selectionSettings: Object;
+
   public contextMenuItems: Object[];
   @ViewChild('treegrid')
   public treeGridObj: TreeGridComponent;
   public closeOnEscape: boolean = false;
+  public visible1: boolean = false;
+//   data2= [
+//     {   field: "TaskID" , headerText:"Player Jersey"  },
+//     {   field: "FIELD1" , headerText:"Player Name"  },
+//     {   field: "FIELD2" , headerText:"Year"  },
+//     {   field: "FIELD3" , headerText:"Stint"  },
+//     {   field: "FIELD4" , headerText:"TMID"  }
 
+// ]
   @ViewChild('ejDialog') ejDialog: DialogComponent;
   // Create element reference for dialog target element.
   @ViewChild('container', { read: ElementRef, static: true })
   container: ElementRef;
+
+  @ViewChild('treegrid')
+  // public treegrid: TreeGridComponent;
   // The Dialog shows within the target element.
   public targetElement: HTMLElement;
 
   @ViewChild('Dialog')
   public dialogObj: DialogComponent;
   public form: FormGroup;
+  copiedRecord: any;
 
   constructor(
     private websocketServiceService: WebsocketServiceService,
@@ -67,6 +84,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.selectionSettings = { type: 'Multiple' };
 
     this.form = this.formBuilder.group({
       taskID: [null, Validators.required],
@@ -82,13 +100,15 @@ export class AppComponent implements OnInit {
 
     this.websocketServiceService.listen('test event').subscribe((data: []) => {
       this.data = data;
+      console.log("dataaa", this.data);
+      
     });
 
 
     this.editSettings = {
-      allowEditing: true,
-      allowAdding: true,
-      allowDeleting: true,
+      // allowEditing: true,
+      // allowAdding: true,
+      // allowDeleting: true,
       // mode: 'Dialog',
     };
 
@@ -127,7 +147,14 @@ export class AppComponent implements OnInit {
 
     ];
 
-    this.pageSettings = { pageSize: 10};
+    // this.pageSettings = { pageSize: 10};
+  }
+
+  ngAfterViewInit(): void {
+    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
+    //Add 'implements AfterViewInit' to the class.
+        this.treeGridObj.selectionSettings.type = 'Multiple';
+    this.treeGridObj.selectionSettings.mode = "Row";
   }
 
   validateAllFormFields(formGroup: FormGroup) {
@@ -185,14 +212,20 @@ export class AppComponent implements OnInit {
 
       console.log('copyrows call');
 
+      this.copiedRecord =args['rowInfo']['rowData'];
+      this.copiedRecord.taskData.TaskID = this.data.length + 1;
+
     }    
     else if (args.item.id === 'cutrows') {
 
-      console.log('cutrows call');
+      console.log('cutrows call' ,args['rowInfo']['rowData']['index']);
 
     } 
     else if (args.item.id === 'pastenext') {
-
+      console.log(this.copiedRecord);
+      console.log(args['rowInfo']['rowData']['index']);
+      
+      // this.treeGridObj.addRecord(this.copiedRecord.taskData,1,args['rowInfo']['rowData']['index']);
       console.log('pastenext call');
 
     } 
@@ -201,6 +234,69 @@ export class AppComponent implements OnInit {
       console.log('pastechild call');
 
     } 
+
+///FOR COLUMNSSSSSSSSSSSSSS
+    else if (args.item.id === 'editcol') {
+
+      console.log('editcol call');
+
+    } 
+
+
+    else if (args.item.id === 'newcol') {
+
+      console.log('newcol call');
+
+    } 
+
+    else if (args.item.id === 'delcol') {
+
+      console.log('delcol call');
+
+    } 
+
+    else if (args.item.id === 'choosecol') {
+
+      console.log('choosecol call');
+
+    } 
+
+    else if (args.item.id === 'freezecol') {
+
+      console.log('freezecol call');
+
+    } 
+
+    else if (args.item.id === 'filtercol') {
+
+      console.log('filtercol call');
+
+    } 
+
+    else if (args.item.id === 'multisort') {
+
+      console.log('multisort call');
+
+    } 
+
+    else if (args.item.id === 'pastechild') {
+
+      console.log('pastechild call');
+
+    } 
+
+    else if (args.item.id === 'pastechild') {
+
+      console.log('pastechild call');
+
+    } 
+
+
+
+
+
+
+
     else {
 
     }
@@ -208,10 +304,11 @@ export class AppComponent implements OnInit {
 
   formPatchValue(value:any){
 
+    console.log(value);
     
     this.form.patchValue({
-    taskID: value.taskID,
-    taskName:value.taskName,
+    taskID: value.TaskID,
+    taskName:value.FIELD1,
     startDate: new Date(value.startDate),
     duration: value.duration,
    })
@@ -237,7 +334,7 @@ export class AppComponent implements OnInit {
   // Enables the footer buttons
   public buttons: Object = [
     {
-      click: this.saveData(),
+      click:  this.hideDialog.bind(this),
       // Accessing button component properties by buttonModel property
       buttonModel: {
         content: "Save",
@@ -260,8 +357,9 @@ export class AppComponent implements OnInit {
   };
 
   saveData(){
-
-    this.hideDialog.bind(this)
+    console.log("here");
+    
+   
   }
   
 }

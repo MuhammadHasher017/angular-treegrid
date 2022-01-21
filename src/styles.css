@@ -158,3 +158,11 @@ body,
   .form-title {
   text-align: center;
   }
+  .e-treegrid .e-row {
+    height: 2em;
+    }
+
+    .e-popup.e-popup-open.e-dialog {
+        display: inline-flex;
+        top: 155.602px !important;
+    }

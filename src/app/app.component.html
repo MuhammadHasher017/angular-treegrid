@@ -1,22 +1,38 @@
-<div style="height: 350px">
 
-  <ejs-treegrid [dataSource]="data" #treegrid height="200%" width="100%" [treeColumnIndex]="1"
+<!-- <div  *ngFor="let item of data2">{{item.field}}</div> -->
+
+<div style="height: 100%">
+<!-- 
+  <ejs-treegrid [dataSource]="data" #treegrid  [enableVirtualization]=true height="200%" width="100%" [treeColumnIndex]="1"
     [sortSettings]="sortSettings" [contextMenuItems]="contextMenuItems" [allowSorting]="true"
-    [allowResizing]="true" [allowPaging]="true" [pageSettings]="pageSettings" [editSettings]="editSettings"
-    (contextMenuClick)='contextMenuClick($event)' childMapping='subtasks'>
+    [allowResizing]="true" [allowPaging]="true" childMapping='Crew' [treeColumnIndex]='1' [pageSettings]="pageSettings" [editSettings]="editSettings"
+    (contextMenuClick)='contextMenuClick($event)' childMapping='subtasks'> -->
 
-    <e-columns>
+  <ejs-treegrid #treegrid [dataSource]='data' [enableVirtualization]=true height=900 width="100%" childMapping='Crew' [treeColumnIndex]='1'[pageSettings]="pageSettings" [editSettings]="editSettings"
+  (contextMenuClick)='contextMenuClick($event)'    [allowResizing]="true"   [sortSettings]="sortSettings" [contextMenuItems]="contextMenuItems" [allowSorting]="true"
+  >
+    <!-- <e-columns>
       <e-column field="taskID" headerText="Task ID" textAlign="Right" width="20%"></e-column>
       <e-column field="taskName" headerText="Task Name" textAlign="Left" width="30%"></e-column>
       <e-column field="startDate" headerText="Start Date" textAlign="Right" format="yMd" width="20%"></e-column>
       <e-column field="duration" headerText="Duration" textAlign="Right" width="30%"></e-column>
-    </e-columns>
+    </e-columns> -->
+    <e-columns >
+      <e-column field="TaskID" headerText="Player Jersey" width='120' textAlign='Right'></e-column>
+      <e-column field='FIELD1' headerText='Player Name' width='120'></e-column>
+      <e-column field='FIELD2' headerText='Year' width='100' textAlign='Right'></e-column>
+      <e-column field='FIELD3' headerText='Stint' width='120' textAlign='Right'></e-column>
+      <e-column field='FIELD4' headerText='TMID' width='120' textAlign='Right'></e-column>
+
+  </e-columns>
+
 
   </ejs-treegrid>
 </div>
 
+
 <div #container class='root-container'></div>
-<ejs-dialog id='dialog' #ejDialog header='Dialog' content='This is a Dialog with button and primary button'
+<ejs-dialog id='dialog'  [visible]='visible1' #ejDialog header='Dialog' content='This is a Dialog with button and primary button'
    width='500px' [buttons]='buttons'>
   <ng-template #header>
     <span>Choose a Dialog Position</span>
